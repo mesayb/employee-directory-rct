@@ -1,6 +1,6 @@
 # Employee Directory
 
-Allows user to view my entire employee directory at once so that I have quick access to their information. User can search employee record by first name or last name, Last name match taking precedence
+Allows users to view entire employee directory at once so that they have quick access to their information. User can search employee record by first name or last name, Last name match taking precedence
 
 ![Screenshot](https://github.com/mesayb/employee-directory-rct/blob/master/desktop1.png?raw=true)
 
