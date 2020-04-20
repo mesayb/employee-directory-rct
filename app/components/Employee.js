@@ -18,7 +18,11 @@ class Employee extends Component {
   
      empRecord = (searchParam)=> {
         if(searchParam !== null){
-           const rec = employeeRecord.filter(emp => emp.first_name.toLowerCase().includes(searchParam.toLowerCase()));
+           const rec = employeeRecord.filter(emp =>{
+             const lastNameCheck = emp.last_name.toLowerCase().includes(searchParam.toLowerCase());
+             const firstNameCheck = emp.first_name.toLowerCase().includes(searchParam.toLowerCase());
+             return (lastNameCheck || firstNameCheck)
+            });
                 this.setState({
                    searchParam: searchParam,
                    results: rec
@@ -44,6 +48,10 @@ class Employee extends Component {
          this.empRecord(value);
     }
 
+    sortTable = (event)=>{
+        console.log('heyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy')
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -54,13 +62,13 @@ class Employee extends Component {
                   handleInputChange={this.handleInputChange} 
                   handleFormSubmit={this.handleFormSubmit}
                   />
-                    <table className="table table-bordered">
+                    <table className="table table-bordered table-sm">
                         <thead>
                             <tr>
                                 <th>Picture</th>
                                 <th className="th-sm">Emp Id</th>
                                 <th className="th-sm">First Name</th>
-                                <th className="th-sm">Last Name</th>
+                                <th className="th-sm" onClick={this.sortTable}>Last Name</th>
                                 <th className="th-sm">Department</th>
                                 <th>Email</th>
                                 <th className="th-sm">Start Date</th>
@@ -83,7 +91,7 @@ class Employee extends Component {
                         </tbody>
                     </table>
                 </div>
-            <Pagination />
+            <Pagination record={this.state.results}/>
 
             </React.Fragment>
         )

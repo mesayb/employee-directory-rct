@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "homepage": "http://mesayb.github.io/employee-directory-rct",
   "scripts": {
     "build": "webpack",
-    "dev": "webpack-dev-server"
+    "dev": "webpack-dev-server",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "babel": {
     "presets": [
@@ -33,6 +36,7 @@
     "@babel/preset-react": "^7.9.4",
     "babel-loader": "^8.1.0",
     "css-loader": "^3.5.2",
+    "gh-pages": "^2.2.0",
     "html-webpack-plugin": "^4.2.0",
     "style-loader": "^1.1.3",
     "webpack": "^4.42.1",
