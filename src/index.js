@@ -10,7 +10,6 @@ class App extends React.Component {
         return (
             <div className="container">
                 <Navbar />
-                {/* <SearchBar /> */}
                 <Employee />
             </div>
         )
