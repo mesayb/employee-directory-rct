@@ -14,6 +14,7 @@ Allows users to view entire employee directory at once so that they have quick a
  - HTML
  - CSS
  - JavaScript
+ - Bootstrap 4
  - React
  
 ## Contributing
