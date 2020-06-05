@@ -3,6 +3,7 @@ import employeeRecord from '../model/employeeDB'
 import SearchBar from './SearchBar'
 import Pagination from './Pagination'
 import { FaChevronDown, FaChevronUp} from "react-icons/fa";
+import EmployeeDetailModal from './EmployeeDetailModal'
 
 
 class Employee extends Component {
@@ -10,15 +11,18 @@ class Employee extends Component {
         results: [],
         pageNumber: 0,
         sort: "asc",
-        sortField :'last_name',
+        sortField :'emp_id',
         searchParam: '',
         currentList: [],
         currentPageList: [1, 2],
-        currentPage: 1
+        currentPage: 1,
+        modalShow : false,
+        currentHoverUser : ''
+
     };
 
     componentDidMount() {
-        const searchAll = null;
+        const searchAll = '';
         this.empRecord(searchAll);
     }
 
@@ -31,15 +35,15 @@ class Employee extends Component {
             });
             this.setState({
                 searchParam: searchParam,
-                results: rec,
-                currentList: rec.slice(0, 10),
+                results: rec.sort((a, b) => (a.emp_id > b.emp_id) ? 1 : -1),
+                currentList: rec.sort((a, b) => (a.emp_id> b.emp_id) ? 1 : -1).slice(0, 10),
             });
         } else
             if (searchParam === null) {
                 this.setState({
                     searchParam: searchParam,
-                    results: employeeRecord,
-                    currentList: employeeRecord.slice(0, 10),
+                    results: employeeRecord.sort((a, b) => (a.emp_id > b.emp_id) ? 1 : -1),
+                    currentList: employeeRecord.sort((a, b) => (a.emp_id> b.emp_id) ? 1 : -1).slice(0, 10),
                 });
             }
 
@@ -60,10 +64,10 @@ class Employee extends Component {
          const sortDxn = event.target.getAttribute('value')
          const sortField =event.target.getAttribute('data')
          const results = this.state.results;
-         console.log("sortDxn = ", sortDxn)
+   
          if(sortDxn === 'desc'){
                const results1 = results.sort((a, b) => (a[sortField] > b[sortField]) ? 1 : -1)
-               console.log("results1 = ", results1)
+   
             this.setState({
                 results: results1,
                 currentList: results1.slice(0, 10),
@@ -72,7 +76,7 @@ class Employee extends Component {
             });
          } else if(sortDxn === 'asc'){
             const results2 = results.sort((a, b) => (a[sortField] < b[sortField]) ? 1 : -1)
-            console.log("results2 = ", results2)
+       
             this.setState({
                 results: results2,
                 currentList: results2.slice(0, 10),
@@ -80,11 +84,11 @@ class Employee extends Component {
                 sortField: sortField
             });
          }
-        console.log('heyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy', sortField)
+    
     }
 
     changepage = (index) => {
-        console.log("index = " + index)
+  
         if (index === "prev") {
             index = (this.state.currentPage - 1)
         } else if (index === "next") {
@@ -110,6 +114,22 @@ class Employee extends Component {
         return pageNumberList;
     }
 
+    toggleHover = (event) => {
+        const currentUserId = event.target.getAttribute('value')
+
+        const currentHoverUser =  employeeRecord.filter(emp => 
+             Number(emp.emp_id) === Number(currentUserId)
+        );
+
+        const display = this.state.modalShow;
+
+        this.setState({
+            modalShow : !display,
+            currentHoverUser : currentHoverUser
+        })
+     
+    }
+
 
 
     render() {
@@ -124,6 +144,8 @@ class Employee extends Component {
                         handleFormSubmit={this.handleFormSubmit}
                         recordSize={this.state.results.length}
                     />
+                      <div className="row">
+                    <div className="col-sm-10">
                     <table className="table table-bordered table-sm">
                         <thead>
                             <tr>
@@ -132,15 +154,15 @@ class Employee extends Component {
                                 <th value={this.state.sort} data='first_name'  className="th-sm"  onClick={this.sortTable}>First Name  {this.state.sortField==='first_name'?( this.state.sort === 'asc'  ? <FaChevronDown/> : <FaChevronUp/>):null}</th>
                                 <th value={this.state.sort} data='last_name' className="th-sm" onClick={this.sortTable}>Last Name  {this.state.sortField==='last_name'?( this.state.sort === 'asc'  ? <FaChevronDown/> : <FaChevronUp/>):null}</th>
                                 <th value={this.state.sort} data='department'  className="th-sm"  onClick={this.sortTable}>Department {this.state.sortField==='department'?( this.state.sort === 'asc'  ? <FaChevronDown/> : <FaChevronUp/>):null}</th>
-                                <th value={this.state.sort} data='email' className="th-sm" onClick={this.sortTable}>Email  {this.state.sortField==='email'?( this.state.sort === 'asc'  ? <FaChevronDown/> : <FaChevronUp/>):null}</th>
+                                <th value={this.state.sort} data='email' className="th-sm" onClick={this.sortTable}>Email  {this.state.sortField==='email'?( this.state.sort === 'asc'  ? <FaChevronDown /> : <FaChevronUp/>):null}</th>
                                 <th className="th-sm">Start Date</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {
+                            {this.state.currentList.length >0 ?
                                 this.state.currentList.map((employee, index) => {
-                                    return (<tr>
-                                        <td><img src={employee.profile_picture} height="30" alt="employee logo" /> </td>
+                                    return (<tr key={index}>
+                                        <td><img src={employee.profile_picture} value={employee.emp_id} height="30" alt="employee logo" onMouseEnter={(event)=>this.toggleHover(event)} onMouseLeave={(event)=>this.toggleHover(event)}/> </td>
                                         <td>{employee.emp_id}</td>
                                         <td>{employee.first_name}</td>
                                         <td>{employee.last_name}</td>
@@ -148,11 +170,20 @@ class Employee extends Component {
                                         <td>{employee.email}</td>
                                         <td>{employee.start_date}</td>
                                     </tr>)
-                                })}
+                                }) : (<tr><td colSpan="7" style={{textAlign:'center', width:'100%'}}>no result</td></tr>)}
 
                         </tbody>
                     </table>
+                  
+
+                    </div>
+                    <div className="col-sm-2" >
+
+                    {this.state.modalShow ? <EmployeeDetailModal currentHoverUser = {this.state.currentHoverUser}/> : null}
+                    </div>
+                    </div>
                 </div>
+
                 <Pagination pageNumberList={this.pageNumber()} changepages={this.changepage} currentPageLists={this.state.currentPageList} currentPage={this.state.currentPage} />
 
             </React.Fragment>

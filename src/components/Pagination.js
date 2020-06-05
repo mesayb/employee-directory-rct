@@ -7,7 +7,7 @@ function Pagination(props) {
     return (
         <React.Fragment>
             <ul className="pagination">
-                <li className="page-item" key='1' ><a className="page-link" onClick={() => props.changepages("prev")} href="#/">Previous</a></li>
+                <li className="page-item" key='prev' ><a className="page-link" onClick={() => props.changepages("prev")} href="#/">Previous</a></li>
                 {
                     props.currentPageLists.map((value) =>
                         value !== 0 ?
@@ -17,7 +17,7 @@ function Pagination(props) {
                             >{value}</a></li> : null
                     )
                 }
-                <li className="page-item" key='5'><a className="page-link" onClick={() => props.changepages("next")} href="#/">Next</a></li>
+                <li className="page-item" key='next'><a className="page-link" onClick={() => props.changepages("next")} href="#/">Next</a></li>
             </ul>
         </React.Fragment>
     )

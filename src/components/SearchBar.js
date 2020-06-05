@@ -21,7 +21,7 @@ function SearchBar(props) {
 
                     </div>
                     <button className="btn btn-outline-white btn-md my-2 my-sm-0">{props.recordSize}</button>
-                    <button className="btn btn-outline-white btn-md my-2 my-sm-0 ml-3" type="submit" onClick={props.handleFormSubmit}>Search</button>
+                    {/* <button className="btn btn-outline-white btn-md my-2 my-sm-0 ml-3" type="submit" onClick={props.handleFormSubmit}>Search</button> */}
                 </form>
             </div>
 
