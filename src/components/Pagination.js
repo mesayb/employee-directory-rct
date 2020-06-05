@@ -4,26 +4,20 @@ import React from 'react'
 
 function Pagination(props) {
 
-    const numberOfPages = Math.ceil(props.record.length / 10)
-
-    const pageNumber = [];
-    for (let i = numberOfPages; i > 0; i--) {
-        pageNumber.push(i);
-    }
-
     return (
         <React.Fragment>
             <ul className="pagination">
-            <li className="page-item" key='1' ><a className="page-link" href="#">Previous</a></li>
+                <li className="page-item" key='1' ><a className="page-link" onClick={() => props.changepages("prev")} href="#/">Previous</a></li>
                 {
-                    pageNumber.map((page, index) =>
-                        <li className="page-item" key={index+1}><a className="page-link" href="#" value={index+1}
-                        onClick={props.changePageNumber}
-                        {...props.currentPage === {index}+1 ? "active" : ""}
-                        >{index+1}</a></li>
+                    props.currentPageLists.map((value) =>
+                        value !== 0 ?
+                            <li className="page-item" onClick={() => props.changepages(value)} key={value + 1}><a className="page-link" href="#/" value={value}
+                                onClick={props.changePageNumber}
+                                style={props.currentPage === value ? { backgroundColor: 'blue' } : null}
+                            >{value}</a></li> : null
                     )
                 }
-            <li className="page-item" key='5'><a className="page-link" href="#">Next</a></li>
+                <li className="page-item" key='5'><a className="page-link" onClick={() => props.changepages("next")} href="#/">Next</a></li>
             </ul>
         </React.Fragment>
     )

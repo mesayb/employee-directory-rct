@@ -222,7 +222,11 @@ const employeeRecord = [{
     department: "Marketing",
     start_date: "11/08/2014",
     profile_picture: "https://randomuser.me/api/portraits/med/men/91.jpg"
-  }]
+  },
+
+
+
+]
 
 
   module.exports = employeeRecord
